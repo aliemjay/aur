@@ -1,0 +1,28 @@
+# $Id$
+# Maintainer: damir <damir@archlinux.org>
+# TU:  Lukas Sabota <punkrockguy318@comcast.net>
+# Contributor: Brice Carpentier <brice@dlfp.org>
+
+pkgname=scons
+pkgver=0.98.5
+pkgrel=1
+pkgdesc="SCons is an open source software contruction tool that is a substitute for make."
+arch=("i686" "x86_64")
+url="http://scons.org"
+license=("custom")
+depends=('python')
+source=("http://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.gz")
+
+build() {
+  true
+}
+
+package() {
+  cd "$startdir/src/$pkgname-$pkgver"
+  python2 setup.py install --standard-lib --prefix=/usr --install-data=/usr/share --root="$pkgdir"
+  sed -i 's/env python$/env python2/' "$pkgdir/usr/bin/"*
+  install -D -m644 "$startdir/src/$pkgname-$pkgver/LICENSE.txt" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
+
+md5sums=('640dfc99a29523a06dbeaac299a3e0a0')

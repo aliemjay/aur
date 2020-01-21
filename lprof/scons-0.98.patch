@@ -1,0 +1,25 @@
+--- SConstruct	2020-01-21 21:54:28.918531796 +0300
++++ SConstruct	2020-01-20 23:45:43.000000000 +0300
+@@ -14,8 +14,8 @@
+ opts = Options('lprof.conf') 
+ opts.Add(PathOption("qt_directory", "Path to Qt directory", "/"))
+ opts.Add(PathOption('PREFIX', 'Directory to install under', os.path.normpath('/usr/local')))
+-opts.Add('ccflags', 'Flags to be passed to c compiler.', '-O2 -Wall -pipe')
+-opts.Add('cxxflags', 'Flags to be passed to c++ compiler.', '-O2 -Wall -pipe')
++opts.Add('ccflags', 'Flags to be passed to c compiler.', ['-O2', '-Wall', '-pipe', '-DQT_THREAD_SUPPORT'])
++opts.Add('cxxflags', 'Flags to be passed to c++ compiler.', ['-O2', '-Wall', '-pipe', '-DQT_THREAD_SUPPORT'])
+ opts.Add('ldflags', 'Stuff to be added to LDFLAGS. If more than one item is being added use space btween items. Enclose multipule items in quotes.', '')
+ opts.Add('added_cppflags', 'List of flags and/or directories to be added to CPPPATH.  If more than one item is being added use space btween items. Enclose multipule items in quotes.', '') 
+ opts.Add('added_libpath', 'List of directories to be added to the LIBPATH.  If more than one item is being added use space btween items. Enclose multipule items in quotes.', '')
+@@ -180,8 +180,10 @@
+ # setup compiler flags
+ # XXX Why isn't this CFLAGS, rather than CCFLAGS? - gdt
+ # Why the lack of symmetry between C and CXX? -gdt
++env.Append(CPPDEFINES='QT_THREAD_SUPPORT')
+ env.Append(CCFLAGS=env ['ccflags'])
+-env.Replace(CXXFLAGS=env ['cxxflags'] + ' -DQT_THREAD_SUPPORT')
++env.Replace(CXXFLAGS=env['cxxflags'].append('-DQT_THREAD_SUPPORT'))
++print("CXXFLAGS = ", env['CXXFLAGS'])
+ 
+ # check system to make sure everything needed is available
+ # begin configuration section
