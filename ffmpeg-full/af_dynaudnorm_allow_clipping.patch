@@ -1,0 +1,11 @@
+--- a/libavfilter/af_dynaudnorm.c	2018-01-12 02:46:47.000000000 +0300
++++ b/libavfilter/af_dynaudnorm.c	2019-05-21 12:45:50.755152921 +0300
+@@ -406,7 +406,7 @@
+ {
+     const double maximum_gain = s->peak_value / find_peak_magnitude(frame, channel);
+     const double rms_gain = s->target_rms > DBL_EPSILON ? (s->target_rms / compute_frame_rms(frame, channel)) : DBL_MAX;
+-    return bound(s->max_amplification, FFMIN(maximum_gain, rms_gain));
++    return bound(s->max_amplification, rms_gain);
+ }
+ 
+ static double minimum_filter(cqueue *q)
